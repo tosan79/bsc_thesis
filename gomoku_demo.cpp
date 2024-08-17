@@ -1,4 +1,6 @@
 #include <iostream>
+#include <ctime>
+#include <cstdlib>
 
 #define N 10
 
@@ -57,9 +59,9 @@ public:
 };
 
 void make_random_move(Board &B, char player) {
-    srand(time(0));
-    int x = rand() % N;
-    int y = rand() % N;
+    std::srand(std::time(nullptr));
+    int x = std::rand() % N;
+    int y = std::rand() % N;
 
     while (B.board[x][y] != '.') {
         x = rand() % N;
