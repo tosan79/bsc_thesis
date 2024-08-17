@@ -6,27 +6,27 @@ const N = 10; // Board size
 const Board = ({ moves, onGameOver }) => {
     const [board, setBoard] = useState(Array.from({ length: N }, () => Array(N).fill(' ')));
     const [lastMove, setLastMove] = useState(null);
-    const [gameOver, setGameOver] = useState(false); // Dodaj stan gameOver
+    const [gameOver, setGameOver] = useState(false);
     const intervalRef = useRef(null); // Ref to store interval ID
 
-    // Function to update the board state with each move
+    // single action function
     const playMove = useCallback((x, y, player) => {
         setBoard(prevBoard => {
-            const newBoard = prevBoard.map(row => row.slice()); // Deep copy of the board
+            const newBoard = prevBoard.map(row => row.slice()); // deep copy of the board
             newBoard[x][y] = player;
             return newBoard;
         });
-        setLastMove([x, y]); // Update last move
+        setLastMove([x, y]);
     }, []);
 
     useEffect(() => {
-        if (gameOver) return; // Jeśli gra jest zakończona, nie uruchamiaj ponownie interwału
+        if (gameOver) return; // if game over do not run again
 
         let moveIndex = 0;
         let currentPlayer = 'O';
 
         if (intervalRef.current) {
-            clearInterval(intervalRef.current); // Clear any existing interval
+            clearInterval(intervalRef.current);
         }
 
         intervalRef.current = setInterval(() => {
@@ -40,12 +40,10 @@ const Board = ({ moves, onGameOver }) => {
                 setGameOver(true); // Ustaw gameOver na true po zakończeniu gry
                 onGameOver(); // Notify that the game is over
             }
-        }, 100); // Play each move with a 1-second delay
+        }, 250); // Play each move with a 1-second delay
 
         return () => clearInterval(intervalRef.current); // Cleanup on unmount
     }, [moves, onGameOver, playMove, gameOver]);
-
-    console.log('Rendering Board component');
 
     return (
         <div>
@@ -62,7 +60,7 @@ const Board = ({ moves, onGameOver }) => {
                     ))}
                 </tbody>
             </table>
-            {gameOver} {/* Warunkowe renderowanie komunikatu o zakończeniu gry */}
+            {gameOver} {}
         </div>
     );
 };
