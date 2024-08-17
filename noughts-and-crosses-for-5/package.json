@@ -12,7 +12,6 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "compile-and-run": "g++ -o gomoku_demo gomoku_demo.cpp && ./gomoku_demo > ./public/moves.json",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
