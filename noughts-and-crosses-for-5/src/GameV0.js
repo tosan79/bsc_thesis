@@ -1,13 +1,46 @@
-// src/Game.js
+//src/Game.js
 import React, { useState, useEffect } from "react";
-import Board from "./Board";
+
+function Square({ value, onClick }) {
+  return (
+    <button className="square" onClick={onClick}>
+      {value}
+    </button>
+  );
+}
+
+function Board({ squares, onClick }) {
+  const renderSquare = (i) => {
+    return <Square value={squares[i]} onClick={() => onClick(i)} />;
+  };
+
+  return (
+    <div>
+      <div className="board-row">
+        {renderSquare(0)}
+        {renderSquare(1)}
+        {renderSquare(2)}
+      </div>
+      <div className="board-row">
+        {renderSquare(3)}
+        {renderSquare(4)}
+        {renderSquare(5)}
+      </div>
+      <div className="board-row">
+        {renderSquare(6)}
+        {renderSquare(7)}
+        {renderSquare(8)}
+      </div>
+    </div>
+  );
+}
 
 const botMoves = [
-  [0, 4, 8], // Bot X's moves
-  [1, 3, 5], // Bot O's moves
+  [0, 1, 2], // Bot X's moves
+  [3, 4, 5], // Bot O's moves
 ];
 
-function Game() {
+function GameV0() {
   const [squares, setSquares] = useState(Array(9).fill(null));
   const [xIsNext, setXIsNext] = useState(true);
   const [moveIndex, setMoveIndex] = useState(0);
@@ -42,4 +75,4 @@ function Game() {
   );
 }
 
-export default Game;
+export default GameV0;
