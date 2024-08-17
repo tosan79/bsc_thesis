@@ -1,38 +1,51 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Board.css';
 
 const N = 10; // Board size
 
 const Board = ({ moves, onGameOver }) => {
     const [board, setBoard] = useState(Array.from({ length: N }, () => Array(N).fill(' ')));
+    const [lastMove, setLastMove] = useState(null);
+    const [gameOver, setGameOver] = useState(false); // Dodaj stan gameOver
+    const intervalRef = useRef(null); // Ref to store interval ID
 
     // Function to update the board state with each move
-    const playMove = (x, y, player) => {
+    const playMove = useCallback((x, y, player) => {
         setBoard(prevBoard => {
             const newBoard = prevBoard.map(row => row.slice()); // Deep copy of the board
             newBoard[x][y] = player;
             return newBoard;
         });
-    };
+        setLastMove([x, y]); // Update last move
+    }, []);
 
     useEffect(() => {
+        if (gameOver) return; // Jeśli gra jest zakończona, nie uruchamiaj ponownie interwału
+
         let moveIndex = 0;
         let currentPlayer = 'O';
 
-        const interval = setInterval(() => {
+        if (intervalRef.current) {
+            clearInterval(intervalRef.current); // Clear any existing interval
+        }
+
+        intervalRef.current = setInterval(() => {
             if (moveIndex < moves.length) {
                 const [x, y] = moves[moveIndex];
                 playMove(x, y, currentPlayer);
                 currentPlayer = currentPlayer === 'O' ? 'X' : 'O'; // Toggle player after each move
                 moveIndex += 1;
             } else {
-                clearInterval(interval);
-                onGameOver();
+                clearInterval(intervalRef.current);
+                setGameOver(true); // Ustaw gameOver na true po zakończeniu gry
+                onGameOver(); // Notify that the game is over
             }
-        }, 1000); // Play each move with a 1-second delay
+        }, 100); // Play each move with a 1-second delay
 
-        return () => clearInterval(interval); // Cleanup on unmount
-    }, [moves, onGameOver]);
+        return () => clearInterval(intervalRef.current); // Cleanup on unmount
+    }, [moves, onGameOver, playMove, gameOver]);
+
+    console.log('Rendering Board component');
 
     return (
         <div>
@@ -41,7 +54,7 @@ const Board = ({ moves, onGameOver }) => {
                     {board.map((row, i) => (
                         <tr key={i}>
                             {row.map((cell, j) => (
-                                <td key={j} className="cell">
+                                <td key={j} className={`cell ${lastMove && lastMove[0] === i && lastMove[1] === j ? 'last-move' : ''}`}>
                                     {cell}
                                 </td>
                             ))}
@@ -49,6 +62,7 @@ const Board = ({ moves, onGameOver }) => {
                     ))}
                 </tbody>
             </table>
+            {gameOver} {/* Warunkowe renderowanie komunikatu o zakończeniu gry */}
         </div>
     );
 };
