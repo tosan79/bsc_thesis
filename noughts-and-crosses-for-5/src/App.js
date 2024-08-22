@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { useEffect, useState } from 'react';
 import Board from './Board';
 
@@ -30,6 +31,19 @@ function App() {
             {gameOver && <p style={{ textAlign: 'center', fontFamily: 'monospace' }}>Winner: {winner}</p>}
         </div>
     );
+=======
+// src/App.js
+import React from "react";
+import Game from "./Game";
+import "./App.css";
+
+function App() {
+  return (
+    <div className="App">
+      <Game />
+    </div>
+  );
+>>>>>>> 0834074 (make frontend in react)
 }
 
 export default App;

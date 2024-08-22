@@ -4,6 +4,7 @@
   "icons": [
     {
       "src": "favicon.ico",
+<<<<<<< HEAD
       "sizes": "48x48",
       "type": "image/x-icon"
     }, 
@@ -11,6 +12,20 @@
       "src": "apple-touch-icon.png",
       "sizes": "180x180",
       "type": "image/png"
+=======
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "logo192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "logo512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+>>>>>>> 0834074 (make frontend in react)
     }
   ],
   "start_url": ".",
